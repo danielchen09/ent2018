@@ -3,7 +3,8 @@ Database structure:
 
 DATABASE hospitalApp
 
-|  --  TABLE users<br />  
+|  --  TABLE users
+
        | --  COL id PRIMARY KEY
        | --  COL name VARCHAR(50)
        | --  COL birthDate DATE
@@ -11,12 +12,14 @@ DATABASE hospitalApp
        | --  COL password VARCHAR(64)
        | --  COL phone VARCHAR(20)
 | --  TABLE medHistory
+
        | --  COL id PRIMARY KEY
        | --  COL name VARCHAR(100)
        | --  COL username VARCHAR(50)
        | --  COL status VARCHAR(5)
        | --  COL startDate VARCHAR(4)
 | --  TABLE medicine
+
        | --  COL id PRIMARY KEY
        | --  COL name VARCHAR(100)
        | --  COL username VARCHAR(50)
