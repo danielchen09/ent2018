@@ -3,6 +3,7 @@ Database structure:
 
 DATABASE hospitalApp
 
+
 |  --  TABLE users
 
        | --  COL id PRIMARY KEY
