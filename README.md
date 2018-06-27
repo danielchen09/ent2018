@@ -1,7 +1,8 @@
 # ent2018
+===================
 Database structure: 
 DATABASE hospitalApp
-|  --  TABLE users
+|  --  TABLE users<br />
        | --  COL id PRIMARY KEY
        | --  COL name VARCHAR(50)
        | --  COL birthDate DATE
