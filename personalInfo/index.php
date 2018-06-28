@@ -30,7 +30,14 @@ session_start();
 	<body>
 		<?php
 			if(!isset($_SESSION["user"])){
+				$_SESSION["redir"]="personalInfo";
 				header("Location: ../login/");
+			}
+			$db=new Database();
+			echo unserialize($_SESSION["user"])->getUsername();
+			$db->updateUser(unserialize($_SESSION["user"]), isset($_POST["name"])?$_POST["name"]:null, isset($_POST["birthday"])?$_POST["birthday"]:null, isset($_POST["gender"])?$_POST["gender"]:null, isset($_POST["phone"])?$_POST["phone"]:null);
+			if(isset($_POST["redir"])){
+				header("Location: ../" . $_POST["redir"]);
 			}
 		?>
     	<div class="jumbotron">
@@ -45,9 +52,9 @@ session_start();
 	        		<input type="text" class="form-control" id="name" name="name" placeholder="Name">
 	        	</div>
 				<div class="form-group">
-					<label for="datetimepicker1e">Birthday</label>
-	                <div class='input-group date' id='datetimepicker1'>
-	                    <input type='text' class="form-control" />
+					<label for="datetimepicker1">Birthday</label>
+	                <div class='input-group date' id='datetimepicker1' >
+	                    <input type='text' class="form-control" name="birthday" />
 	                    <span class="input-group-addon">
 	                        <span class="glyphicon glyphicon-calendar"></span>
 	                    </span>
@@ -62,15 +69,24 @@ session_start();
 	            });
         		</script>
         		<div class="form-group">
+					<label for="inputState">Gender</label>
+					<select id="inputState" class="form-control" name="gender">
+						<option selected value="N">gender ...</option>
+						<option value="M">Male</option>
+						<option value="F">Female</option>
+						<option value="O">Other</option>
+					</select>
+				</div>
+        		<div class="form-group">
 	        		<label for="phone">Phone Number</label>
 	        		<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone">
 	        	</div>
 	        	<div class="row">
 				  	<div class="form-group col-lg-1">
-					    <button type="submit" onclick="javascript: form.action='../'" class="btn btn-default">Next</button>
+					    <button type="submit" name="redir" value="/personalInfo/medHistory.php" class="btn btn-default">Next</button>
 				 	</div>
 				 	<div class="form-group col-lg-1">
-					    <button type="submit" onclick="javascript: form.action='../profile'" class="btn btn-default">Save and exit</button>
+					    <button type="submit" name="redir" value="/profile" class="btn btn-default">Save and exit</button>
 				 	</div>
 			 	</div>
 	        </form> 	

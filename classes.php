@@ -4,6 +4,7 @@ class User{
 
 	private $name;
 	private $birthDate;
+	private $gender;
 	private $phone;
 
 	function __construct($username){
@@ -11,10 +12,6 @@ class User{
 		
 		$db = new Database();	
 		$userInfo = $db->getUserInfo($this->username);
-
-		$this->name = $userInfo["name"];
-		$this->phone = $userInfo["phone"];
-		$this->birthDate = strtotime($userInfo["birthDate"]);
 
 		$db->__destruct();
 	}
@@ -29,8 +26,23 @@ class User{
 	function getBirthDate(){
 		return $this->birthDate;
 	}
+	function getGender(){
+		return $this->gender;
+	}
 	function getPhone(){
 		return $this->phone;
+	}
+
+	function update(){
+		$db = new Database();	
+		$userInfo = $db->getUserInfo($this->username);
+
+		$this->name = $userInfo["name"];
+		$this->phone = $userInfo["phone"];
+		$this->birthDate = $userInfo["birthDate"];
+		$this->gender = $userInfo["gender"];
+
+		$db->__destruct();
 	}
 }
 
@@ -66,8 +78,8 @@ class Database{
 	function addUser($username, $password){
 		$this->conn->query("INSERT INTO USERS(username, password) VALUES('" . $username . "', '" . $password . "');");
 	}
-	function updateUser($username, $name, $birthDate, $phone){
-		$this->conn->query("UPDATE USERS SET name='" . $name . "', '" . $birthDate . "', '" . $phone . "' WHERE username='" . $username . "';");
+	function updateUser($user, $name, $birthDate, $gender, $phone){
+		$this->conn->query("UPDATE USERS SET name='" . $name . "', birthDate='" . $birthDate . "', gender='" . $gender . "', phone='" . $phone . "' WHERE username='" . $user->getUsername() . "';");
 	}
 	function userExists($username){
 		return $this->conn->query("SELECT username FROM USERS WHERE username='" . $username . "';")->fetch_assoc() != null;
@@ -75,7 +87,7 @@ class Database{
 
 	//login
 	function getUserInfo($username){
-		return $this->conn->query("SELECT name, birthDate, phone FROM USERS WHERE username='" . $username . "';")->fetch_assoc();
+		return $this->conn->query("SELECT name, birthDate, gender, phone FROM USERS WHERE username='" . $username . "';")->fetch_assoc();
 	}
 	function getPassword($username){
 		return $this->conn->query("SELECT password FROM USERS WHERE username='" . $username . "';")->fetch_assoc()["password"];

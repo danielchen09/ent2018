@@ -18,9 +18,11 @@ session_start();
 	<body>
 		<?php
 			if(!isset($_SESSION["user"])){
+				$_SESSION["redir"]="profile";
 				header("Location: ../login/");
 			}
 			$user = unserialize($_SESSION["user"]);
+			$user->update();
 		?>
     	<div class="jumbotron">
     		<h1>PROFILE</h1>
@@ -47,6 +49,28 @@ session_start();
 	      				echo "not set";
 	      			}
 	      		?>
+      		</div>
+      		<div class="well">
+      			Gender:
+      			<?php
+      				if($user->getGender()!=="N"){
+      					switch($user->getGender()){
+      						case "O":
+      							echo "Other";
+      							break;
+      						case "M":
+      							echo "Male";
+      							break;
+      						case "F":
+      							echo "Female";
+      							break;
+      						default:
+      							echo "not set";
+      					}
+      				}else{
+      					echo "not set";
+      				}
+      			?>
       		</div>
       		<div class="well">
       			Phone number:

@@ -26,7 +26,7 @@ session_start();
     		if(isset($_POST["loginusername"])){
     			if(hash("sha256", $_POST["loginpassword"])==$db->getPassword($_POST["loginusername"])){
     				$_SESSION["user"]=serialize(new User($_POST["loginusername"]));
-    				header("Location: ../");
+    				header("Location: ../" . (isset($_SESSION["redir"])?$_SESSION["redir"]:""));
     			}else{
     				$loginFailed=true;
     			}
