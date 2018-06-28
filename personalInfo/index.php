@@ -26,6 +26,8 @@ session_start();
 		<script type="text/javascript" src="/path/to/bootstrap/js/collapse.js"></script>
 		<script type="text/javascript" src="/path/to/bootstrap/dist/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/path/to/bootstrap-datetimepicker.min.js"></script>
+		<link rel="shortcut icon" type="image/x-icon" href="../marker.png" />
+        <title>Hospital Finder-Login</title>
 	</head>
 	<body>
 		<?php
@@ -34,7 +36,6 @@ session_start();
 				header("Location: ../login/");
 			}
 			$db=new Database();
-			echo unserialize($_SESSION["user"])->getUsername();
 			$db->updateUser(unserialize($_SESSION["user"]), isset($_POST["name"])?$_POST["name"]:null, isset($_POST["birthday"])?$_POST["birthday"]:null, isset($_POST["gender"])?$_POST["gender"]:null, isset($_POST["phone"])?$_POST["phone"]:null);
 			if(isset($_POST["redir"])){
 				header("Location: ../" . $_POST["redir"]);

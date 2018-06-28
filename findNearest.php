@@ -1,3 +1,7 @@
+<?php
+session_start();
+$_SESSION["redir"]="findNearest.php";
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -14,7 +18,7 @@
       }
 
       #right-panel select {
-        width: 100%;
+        width: 50%;
       }
 
       #right-panel i {
@@ -27,17 +31,19 @@
       }
       #map {
         height: 100%;
-        width: 50%;
+        width: 68%;
       }
       #right-panel {
         float: right;
-        width: 48%;
+        width: 30%;
         padding-left: 2%;
       }
       #output {
         font-size: 11px;
       }
     </style>
+    <link rel="shortcut icon" type="image/x-icon" href="marker.png" />
+    <title>Hospital Finder</title>
   </head>
   <body>
     <div id="right-panel">
