@@ -98,4 +98,44 @@ class Database{
 		return $this->conn->query("SELECT * FROM " . $table . ";")->num_rows;
 	}
 }
+
+class HospitalData{
+	private $html;
+
+	function __construct($url){
+		$ch = curl_init(); 
+		//ddl_City 
+		//$data=array("ddl_City"=>"01");  
+		$data="";
+		curl_setopt($ch, CURLOPT_URL, $url);  
+		curl_setopt($ch, CURLOPT_HEADER, 0); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
+		curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+		curl_setopt($ch, CURLOPT_POST, 1); 
+		//curl_setopt($ch, CURLOPT_POSTFIELDS, $data); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("application/x-www-form-urlencoded; charset=utf-8", 
+		    "Content-length: ".strlen($data)
+		    )); 
+		$this->html = curl_exec($ch);   
+		if(curl_errno($ch)){
+		    echo 'Curl error: ' . curl_error($ch);
+		}
+		curl_close($ch);
+	}
+
+	function matchPattern($pattern){
+		preg_match_all($pattern, $this->html, $matches);
+		return $matches;
+	}
+
+	function getRows(){
+		preg_match_all("~<tr[^>]*>(.*)</tr>~U", $this->html, $matches);
+		return $matches;
+	}
+
+	function getHtml(){
+		return $this->html;
+	}
+
+}
 ?>
