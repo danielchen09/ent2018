@@ -1,4 +1,20 @@
-<style>
+@import url("https://fonts.googleapis.com/css?family=Abel");
+
+/* General Text */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  font-family: "Abel";
+}
+
+h1{
+    text-align: center;
+    font-size: 100px;
+}
+
+p{
+    text-align: center;
+}
+
+/* Location Btn*/
 .container {
   position: relative;
   width: 50%;
@@ -27,13 +43,83 @@
   opacity: 0;
 }
 
-h1{
-    text-align: center;
-    font-size: 100px;
+/*Side Navigation Bar*/
+.menu {
+  margin-right: 30px;
+  float: right;
+  text-transform: uppercase;
+  font-size: 30px;
+  color:black;
+  visibility: "visible";
+}
+.sideNavBar{
+  height: 60%;
+  width: 0;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
 }
 
-p{
-    text-align: center;
+.sideNavBar a{
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #a6a6a6;
+  display: block;
+  transition: 0.3s;
 }
 
-</style>
+.sideNavBar a:hover{
+  color: #f1f1f1;
+}
+
+.icon a{
+  padding: 14px;
+  display: block;
+  transition: all 0.3 ease;
+  color: black;
+  font-size: 150%;
+  text-align: center;
+}
+
+.icon a:hover {
+  background-color: #000000;
+}
+
+.icon a[data]:hover:after{
+  content: attr(data);
+  padding: 4px 8px;
+  color: #ffffff
+  white-space: nowrap;
+  z-index: 2;
+  border-radius: 5px ;
+  font-size: 50%;
+}
+
+/*Top Navigation Bar*/
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+li{
+  float: right;
+}
+
+li a{
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover{
+  color: white;
+  background-color: #111111;
+}
