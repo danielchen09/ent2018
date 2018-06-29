@@ -5,7 +5,7 @@ $_SESSION["redir"]="findNearest.php";
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Distance Matrix service</title>
+    <title>Find Hospital</title>
     <style>
       #right-panel {
         font-family: 'Roboto','sans-serif';
@@ -18,7 +18,7 @@ $_SESSION["redir"]="findNearest.php";
       }
 
       #right-panel select {
-        width: 50%;
+        width: 100%;
       }
 
       #right-panel i {
@@ -31,29 +31,21 @@ $_SESSION["redir"]="findNearest.php";
       }
       #map {
         height: 100%;
-        width: 68%;
+        width: 50%;
       }
       #right-panel {
         float: right;
-        width: 30%;
+        width: 48%;
         padding-left: 2%;
       }
       #output {
         font-size: 11px;
       }
     </style>
-    <link rel="shortcut icon" type="image/x-icon" href="marker.png" />
-    <title>Hospital Finder</title>
   </head>
   <body>
     <div id="right-panel">
       <div id="inputs">
-        <pre>
-origin1 = {lat: 55.930, lng: -3.118};
-origin2 = 'Greenwich, England';
-destinationA = 'Stockholm, Sweden';
-destinationB = {lat: 50.087, lng: 14.421};
-        </pre>
       </div>
       <div>
         <strong>Results</strong>
@@ -62,29 +54,36 @@ destinationB = {lat: 50.087, lng: 14.421};
     </div>
     <div id="map"></div>
     <script>
-      function initMap() {
+      function getLocation(){
+        if(navigator.geolocation){
+          navigator.geolocation.getCurrentPosition(currentPosition);
+        }
+        
+      }
+      function currentPosition(position){
+        var loc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        initMap(loc);
+      }
+      function initMap(loc) {
         var bounds = new google.maps.LatLngBounds;
         var markersArray = [];
 
-        var origin1 = {lat: 55.93, lng: -3.118};
-        var origin2 = 'Greenwich, England';
-        var destinationA = 'Stockholm, Sweden';
-        var destinationB = {lat: 50.087, lng: 14.421};
+        var destinationA = 'Hsinchu, Taiwan';
 
         var destinationIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=D|FF0000|000000';
         var originIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=O|FFFF00|000000';
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 55.53, lng: 9.4},
+          center: loc,
           zoom: 10
         });
         var geocoder = new google.maps.Geocoder;
 
         var service = new google.maps.DistanceMatrixService;
         service.getDistanceMatrix({
-          origins: [origin1, origin2],
-          destinations: [destinationA, destinationB],
+          origins: [loc],
+          destinations: [destinationA],
           travelMode: 'DRIVING',
           unitSystem: google.maps.UnitSystem.METRIC,
           avoidHighways: false,
@@ -92,7 +91,8 @@ destinationB = {lat: 50.087, lng: 14.421};
         }, function(response, status) {
           if (status !== 'OK') {
             alert('Error was: ' + status);
-          } else {
+          } 
+          else {
             var originList = response.originAddresses;
             var destinationList = response.destinationAddresses;
             var outputDiv = document.getElementById('output');
@@ -115,26 +115,32 @@ destinationB = {lat: 50.087, lng: 14.421};
               };
             };
             var count = 0;
+            var z = 0;
             for (var i = 0; i < originList.length; i++) {
-				var results = response.rows[i].elements;
-				if(count == 0){
-					count++;
-					var shortest = results[0];
-				}
-				geocoder.geocode({'address': originList[i]},
-				showGeocodedAddressOnMap(false));
-				for (var j = 0; j < results.length; j++) {
-					geocoder.geocode({'address': destinationList[j]},
-					showGeocodedAddressOnMap(true));
-					outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
-					': ' + results[j].distance.text + ' in ' +
-					results[j].duration.text + '<br>';
-					if (results[j].duration.value < shortest.duration.value){
-						shortest = results[j];
-						var origin = originList[i];
-						var des = destinationList[j];
-					}
-				}
+              var results = response.rows[i].elements;
+              if(count == 0){
+                count++;
+                var shortest = results[0];
+                var des = destinationList[0];
+              }
+              geocoder.geocode({'address': originList[i]},
+              showGeocodedAddressOnMap(false));
+              for (var j = 0; j < results.length; j++) {
+                geocoder.geocode({'address': destinationList[j]},
+                showGeocodedAddressOnMap(true));
+                outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
+                ': ' + results[j].distance.text + ' in ' +
+                results[j].duration.text + '<br>';
+                if(z == 0){
+                  z++;
+                  var origin = originList[0];
+                }
+                if (results[j].duration.value < shortest.duration.value){
+                  shortest = results[j];
+                  origin = originList[i];
+                  des = destinationList[j];
+                }
+              }
             }
             outputDiv.innerHTML += "<br>" + origin + " to " + des + ": " +shortest.distance.text + " in " +shortest.duration.text + "<br>";
           }
@@ -148,8 +154,7 @@ destinationB = {lat: 50.087, lng: 14.421};
         markersArray = [];
       }
     </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa6Ly7B_jOG4p6r9uK1Aw4je5BWnoqPtY&callback=initMap">
+    <script async defer src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAa6Ly7B_jOG4p6r9uK1Aw4je5BWnoqPtY&callback=getLocation">
     </script>
   </body>
 </html>
