@@ -14,19 +14,9 @@ session_start();
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	  	<script type="text/javascript" src="/bower_components/jquery/jquery.min.js"></script>
 	    <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
-	    <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	    <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-	    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
 	    <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
-	    <script type="text/javascript" src="/path/to/jquery.js"></script>
-		<script type="text/javascript" src="/path/to/moment.js"></script>
-		<script type="text/javascript" src="/path/to/bootstrap/js/transition.js"></script>
-		<script type="text/javascript" src="/path/to/bootstrap/js/collapse.js"></script>
-		<script type="text/javascript" src="/path/to/bootstrap/dist/bootstrap.min.js"></script>
-		<script type="text/javascript" src="/path/to/bootstrap-datetimepicker.min.js"></script>
-		<link rel="shortcut icon" type="image/x-icon" href="../marker.png" />
         <title>Hospital Finder-Login</title>
 	</head>
 	<body>
@@ -47,7 +37,7 @@ session_start();
     	</div>
 
         <div class="container">
-	        <form method="POST" role="form" action="">
+	        <form method="POST" role="form">
 	        	<div class="form-group">
 	        		<label for="name">Name</label>
 	        		<input type="text" class="form-control" id="name" name="name" placeholder="Name">
@@ -82,6 +72,7 @@ session_start();
 	        		<label for="phone">Phone Number</label>
 	        		<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone">
 	        	</div>
+
 	        	<div class="row">
 				  	<div class="form-group col-lg-1">
 					    <button type="submit" name="redir" value="/personalInfo/medHistory.php" class="btn btn-default">Next</button>
