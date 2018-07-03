@@ -1,9 +1,5 @@
 <?php
-  $data_array = geocode($set_address);
-  $latitude = $data_array[0];
-  $longitude = $data_array[1];
-  $data_address = $data_array[2];
-
+  $data_array;
   function geocode($address){
       $address = urlencode($address);
 
@@ -14,8 +10,8 @@
       $response = json_decode($response_json, true);
 
       if($response['status']='OK'){
-          $latitude_data = $response['results'][0]['geometry']['location']['lat']; //緯度
-          $longitude_data = $response['results'][0]['geometry']['location']['lng']; //精度
+          $latitude_data = $response['results'][0]['geometry']['location']['lat'];
+          $longitude_data = $response['results'][0]['geometry']['location']['lng'];
           $data_address = $response['results'][0]['formatted_address'];
 
           if($latitude_data && $longitude_data && $data_address){
@@ -25,10 +21,10 @@
               array_push(
                   $data_array,
                   $latitude_data, //$data_array[0]
-                  $longitude_data, //$data_array[1]
+                  $longitude_data//$data_array[1]
               );
 
-              return $data_array; //回傳$data_array
+              return $data_array;
 
           }else{
               return false;
@@ -38,7 +34,6 @@
           return false;
       }
   }
-  //-----function end-----
 ?>
 
 <!DOCTYPE html>
@@ -81,7 +76,7 @@
           if (err) throw err;
           con.query("SELECT address FROM HOSPITALINFO", function(err, addr, fields)){
             if(err) throw err;
-            desArr = addr;
+            var desArr = addr;
           }
         }
         for(int x; x = 0; x < desArr.length; x++){
