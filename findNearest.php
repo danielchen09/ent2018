@@ -32,6 +32,7 @@
     <script>
         var desArr;
         var desGeoLoc = [];
+        var shortestDuration;
 
         function getLocation(){
             if(navigator.geolocation){
@@ -40,27 +41,10 @@
         }
         function currentPosition(position){
             var loc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            desArr = <?php echo json_encode($db->getAddress());?>;
-            for(var x = 0; x < desArr.length; x++){
-                var geoloc = String(desArr[x]["address"]);
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                    console.log(this.responseText);
-                    desGeoLoc.push(this.responseText);
-                    
-                  }
-                };
-                xmlhttp.open("GET", "saveVar.php?geoloc=" + geoloc, true);
-                xmlhttp.send();
-                
-
-            }
-            console.log(desGeoLoc);
-            initMap(loc, desGeoLoc);
+            initMap(loc, '臺東縣台東市復興路209號');
         }
 
-        function initMap(loc, desLoc) {
+        function initMap(loc, desLoc){
             var bounds = new google.maps.LatLngBounds;
             var markersArray = [];
 
@@ -85,8 +69,7 @@
             }, function(response, status) {
                 if (status !== 'OK') {
                     alert('Error was: ' + status);
-                }
-                else {
+                }else {
                     var originList = response.originAddresses;
                     var destinationList = response.destinationAddresses;
                     var outputDiv = document.getElementById('output');
@@ -136,7 +119,10 @@
                             }
                         }
                     }
+
                     outputDiv.innerHTML += "<br>" + origin + " to " + des + ": " +shortest.distance.text + " in " +shortest.duration.text + "<br>";
+                    shortestDuration=shortest.duration.text;
+                    console.log(shortestDuration);
                 }
             });
         }
