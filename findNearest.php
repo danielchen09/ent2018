@@ -4,6 +4,7 @@
     error_reporting(E_ALL);
     session_start();
     include("classes.php");
+
     $db=new Database();
 ?>
 
@@ -32,16 +33,23 @@
     <script>
         var desArr;
         var desGeoLoc = [];
-        var shortestDuration;
+        var durations = [];
+        var address = <?php echo json_encode($db->getAddress())?>;
+        var dest;
 
         function getLocation(){
+          for(var i=0; i<address.length; i++){
+            dest=address[i]["address"];
             if(navigator.geolocation){
                 navigator.geolocation.getCurrentPosition(currentPosition);
             }
+          }
+          console.log(durations);
         }
         function currentPosition(position){
             var loc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            initMap(loc, '臺東縣台東市復興路209號');
+            console.log(dest);
+            initMap(loc, dest);
         }
 
         function initMap(loc, desLoc){
@@ -121,8 +129,7 @@
                     }
 
                     outputDiv.innerHTML += "<br>" + origin + " to " + des + ": " +shortest.distance.text + " in " +shortest.duration.text + "<br>";
-                    shortestDuration=shortest.duration.text;
-                    console.log(shortestDuration);
+                    durations.push([desLoc, shortest.duration.text]);
                 }
             });
         }
