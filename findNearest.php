@@ -2,42 +2,9 @@
     ini_set('display_errors', 1);
     ini_set('displat_startup_errors', 1);
     error_reporting(E_ALL);
+    session_start();
     include("classes.php");
-
-    function geocode($address){
-      $address = urlencode($address);
-
-      $url = "http://maps.google.com/maps/api/geocode/json?address={$address}&language=zh-TW";
-
-      $response_json = file_get_contents($url);
-
-      $response = json_decode($response_json, true);
-
-      if($response['status']='OK'){
-          $latitude_data = $response['results'][0]['geometry']['location']['lat'];
-          $longitude_data = $response['results'][0]['geometry']['location']['lng'];
-          $data_address = $response['results'][0]['formatted_address'];
-
-          if($latitude_data && $longitude_data && $data_address){
-
-              $data_array = array();
-
-              array_push(
-                  $data_array,
-                  $latitude_data, //$data_array[0]
-                  $longitude_data//$data_array[1]
-              );
-
-              return $data_array;
-
-          }else{
-              return false;
-          }
-
-      }else{
-          return false;
-      }
-    }
+    $db=new Database();
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +12,12 @@
     <head>
         <title>Find Hospital</title>
         <link rel = "stylesheet" href = "map.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="../marker.png" />
     </head>
     <body>
     <div id="right-panel">
@@ -57,7 +30,7 @@
     </div>
     <div id="map"></div>
     <script>
-        var desArr = [];
+        var desArr;
         var desGeoLoc = [];
 
         function getLocation(){
@@ -67,13 +40,24 @@
         }
         function currentPosition(position){
             var loc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            desArr = <?php echo getAddress();?>;
+            desArr = <?php echo json_encode($db->getAddress());?>;
             for(var x = 0; x < desArr.length; x++){
-                var geoloc = desArr[x];
-                desGeoLoc.push(<?php echo geocode(geoloc);?>);
-                initMap(loc, desGeoloc);
+                var geoloc = String(desArr[x]["address"]);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    desGeoLoc.push(this.responseText);
+                    
+                  }
+                };
+                xmlhttp.open("GET", "saveVar.php?geoloc=" + geoloc, true);
+                xmlhttp.send();
+                
 
             }
+            console.log(desGeoLoc);
+            initMap(loc, desGeoLoc);
         }
 
         function initMap(loc, desLoc) {
@@ -86,7 +70,7 @@
                 'chst=d_map_pin_letter&chld=O|FFFF00|000000';
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: loc,
-                zoom: 10
+                zoom: 14
             });
             var geocoder = new google.maps.Geocoder;
 

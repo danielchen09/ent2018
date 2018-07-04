@@ -125,7 +125,7 @@ class Database{
 
 	//find
 	function getAddress(){
-		$result = $this->conn->query("SELECT address FROM HOSPITALINFO");
+		$result = $this->conn->query("SELECT address FROM HOSPITALINFO LIMIT 5");
 		$results=array();
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
