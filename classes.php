@@ -93,7 +93,49 @@ class Database{
 		return $this->conn->query("SELECT password FROM USERS WHERE username='" . $username . "';")->fetch_assoc()["password"];
 	}
 
-	//other
+	//medHistory
+	function addMedHistory($user, $name, $status, $startYr){
+		$this->conn->query("INSERT INTO MEDHISTORY(username, name, status, startYr) VALUES('" . $user->getUsername() . "', '" . $name . "', '" . $status . "', '" . $startYr . "');");
+	}
+	function getMedHistory($user){
+		$result = $this->conn->query("SELECT name, status, startYr FROM MEDHISTORY WHERE username='" . $user->getUsername() . "';");
+		$results=array();
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				$results[]=$row;
+			}
+		}
+		return $results;
+	}
+
+	//medicine
+	function addMedicine($user, $name, $purpose, $frequency, $period, $ongoing){
+		$this->conn->query("INSERT INTO MEDICINE(username, name, purpose, frequency, period, ongoing) VALUES('" . $user->getUsername() . "', '" . $name . "', '" . $purpose . "', '" . $frequency . "', '" . $period . "', '" . $ongoing . "');");
+	}
+	function getMedicine($user){
+		$result = $this->conn->query("SELECT name, purpose, frequency, period, ongoing FROM MEDICINE WHERE username='" . $user->getUsername() . "';");
+		$results=array();
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				$results[]=$row;
+			}
+		}
+		return $results;
+	}
+
+	//find
+	function getAddress(){
+		$result = $this->conn->query("SELECT address FROM HOSPITALINFO");
+		$results=array();
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				$results[]=$row;
+			}
+		}
+		return $results;
+	}
+
+	//general
 	function getRows($table){
 		return $this->conn->query("SELECT * FROM " . $table . ";")->num_rows;
 	}
