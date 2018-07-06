@@ -125,7 +125,7 @@ class Database{
 
 	//find
 	function getAddress(){
-		$result = $this->conn->query("SELECT address FROM HOSPITALINFO LIMIT 5");
+		$result = $this->conn->query("SELECT address FROM HOSPITALINFO LIMIT 50");
 		$results=array();
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
@@ -134,6 +134,21 @@ class Database{
 		}
 		return $results;
 	}
+	function setGeocode($id){
+        $address = ($this->conn->query("SELECT address FROM HOSPITALINFO WHERE ID='" . $id . "';")->fetch_assoc())["address"];
+
+        $prepAddr = str_replace(' ','+',$address);
+        $geocode=file_get_contents('https://maps.google.com/maps/api/geocode/json?address='.$prepAddr.'&sensor=false');
+        $output= json_decode($geocode);
+        $latitude = $output->results[0]->geometry->location->lat;
+        $longitude = $output->results[0]->geometry->location->lng;
+
+        if($output->status=='OK'){
+        	$this->conn->query("UPDATE HOSPITALINFO SET latitude='" . $latitude . "', longitude='" . $longitude . "' WHERE ID='" . $id . "';");
+    	}else{
+    		echo $id . ":" . $output->status;
+    	}
+    }
 
 	//general
 	function getRows($table){
