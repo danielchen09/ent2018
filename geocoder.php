@@ -5,22 +5,19 @@
 <html>
     <head>
         <title>Geocoding service</title>
-        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
     </head>
     <body>
         <div id="output"></div>
         <script>
             function geocodeAddress() {
-                var dbConnection = SQL.connect({
-                    Driver: "MySQL",
-                    Host: "localhost",
-                    Database: "hospitalApp",
-                    UserName: "root",
-                    Password: "101dc101"
-                });
-                var address = dbConnection.query("SELECT address FROM HOSPITALINFO LIMIT 1");
-                
+                var connection = new ActiveXObject("ADODB.Connection");
+                var connectionstring = "Data Source=<localhost>;Initial Catalog=<Database>;User ID=<root>;Password=<101dc101>;Provider=SQLOLEDB";
+                connection.Open(connectionstring);
+                var rs = new ActiveXObject("ADODB.Recordset");
+                rs.Open("SELECT address FROM HOSPITALINFO LIMIT 1", connection);
+                var address = rs.fields(0);
+
                 var geocoder = new google.maps.Geocoder();
                 var geoLoc;
                 var output = document.getElementById('output');
@@ -38,5 +35,3 @@
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa6Ly7B_jOG4p6r9uK1Aw4je5BWnoqPtY&callback=geocodeAddress"></script>
     </body>
 </html>
-
-
