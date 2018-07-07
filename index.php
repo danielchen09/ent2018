@@ -29,7 +29,6 @@ $_SESSION["redir"]="";
 	</head>
 	<body>
         <div class="jumbotron">
-            
             <?php
                 if(!isset($_SESSION["user"])){
                 echo "
@@ -71,10 +70,20 @@ $_SESSION["redir"]="";
                 document.getElementById("sideNav").style.width = "0";
                 document.getElementById("nav").style.display = "block";
             }
+
+            $('body').click( function (e) { 
+                if ( e.target.nodeName != "I") 
+                    closeNav();
+            });
         </script>
 
         <div class="container">
-            <a href="findNearest.php"><img src="marker.png" class="image"></a>
+            <a href=""><img src="clinicLocation.png" class="image"></a>
+            <br>
+            <a href=""><img src="emergencyLocation.png" class="image"></a>
+            <br>
+            <a href=""><img src="hospitalLocation.png" class="image"></a>
+            <br>
         </div>
 	</body>
 
