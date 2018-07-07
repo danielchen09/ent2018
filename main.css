@@ -42,44 +42,6 @@ p{
     opacity: 0.5;
     transition: .5s ease;
 }
-@media screen and (max-width: 700px) {
-    .col {
-        float: none;
-        width: 45%;
-        margin-left: auto;
-        margin-right: auto;
-        animation: breathing 7s ease-out infinite normal;
-    }
-    .col .text{
-        color: black;
-        font-size: 100%;
-        position: relative;
-        text-align: center;
-        visibility: hidden;
-    }
-    h1{
-        padding-left: 0%;
-    }
-}
-/* animation */
-@-webkit-keyframes breathing {
-    0% {
-        -webkit-transform: scale(0.98);
-        transform: scale(0.98);
-    }
-    25% {
-        -webkit-transform: scale(1);
-        transform: scale(1);
-    }
-    60% {
-        -webkit-transform: scale(0.98);
-        transform: scale(0.98);
-    }
-    100% {
-        -webkit-transform: scale(0.98);
-        transform: scale(0.98);
-    }
-}
 
 /*Side Navigation Bar*/
 .menu {
@@ -146,6 +108,7 @@ ul{
 }
 
 li a{
+    font-size: 110%;
     float: right;
     display: block;
     color: black;
@@ -153,7 +116,6 @@ li a{
     padding:14px 16px;
     text-decoration: none;
 }
-
 
 li .icon-text:hover{
     float: right;
@@ -166,5 +128,48 @@ li h1{
     padding-left: 18%;
 }
 
+/* animation */
+@-webkit-keyframes breathing {
+    0% {
+        -webkit-transform: scale(0.98);
+        transform: scale(0.98);
+    }
+    25% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    60% {
+        -webkit-transform: scale(0.98);
+        transform: scale(0.98);
+    }
+    100% {
+        -webkit-transform: scale(0.98);
+        transform: scale(0.98);
+    }
+}
+
+/* @media */
+@media screen and (max-width: 700px) {
+    .col {
+        float: none;
+        width: 45%;
+        margin-left: auto;
+        margin-right: auto;
+        animation: breathing 7s ease-out infinite normal;
+    }
+    .col .text{
+        color: black;
+        font-size: 100%;
+        position: relative;
+        text-align: center;
+        visibility: hidden;
+    }
+    li h1{
+        padding-left: 0%;
+    }
+    li a{
+        font-size: 80%;
+    }
+}
 
 
