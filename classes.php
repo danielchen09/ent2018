@@ -49,9 +49,9 @@ class User{
 class Database{
 	private $conn;
 	private $host = "localhost";
-	private $username = "root";
-	private $password = "101dc101";
-	private $name = "hospitalApp";
+	private $username = "winnieli";
+	private $password = "winnieli1129";
+	private $name = "hospitalocateDb";
 
 	function __construct(){
 		$this->conn = new mysqli($this->host, $this->username, $this->password, $this->name);
@@ -134,6 +134,17 @@ class Database{
 		}
 		return $results;
 	}
+	function getAddressByName($name){
+		$result = $this->conn->query("SELECT address FROM HOSPITALINFO WHERE name LIKE '%" . $name . "%';");
+		echo $name;
+		$results=array();
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				$results[]=$row;
+			}
+		}
+		return $results;
+	}
 	function setGeocode($id){
         $address = ($this->conn->query("SELECT address FROM HOSPITALINFO WHERE ID='" . $id . "';")->fetch_assoc())["address"];
 
@@ -194,5 +205,52 @@ class HospitalData{
 		return $this->html;
 	}
 
+}
+
+class HospitalDataTW{
+	private $name;
+	private $admission;
+	private $other;
+	private $full;
+	private $status;
+	private $address;
+
+	function __construct(){
+		$h=new HospitalData("https://www.nhi.gov.tw/SysService/SevereAcuteHospital.aspx");
+		$html=$h->getHtml();
+		preg_match_all("~<a[^>]*>(.*)</a>~U", $html, $this->name);
+		preg_match_all("~([0-9]+)</div>~isU", $html, $this->admission);
+		preg_match_all("~\s(是|否)~isU", $html, $this->full);
+		preg_match_all("~([0-9]+)</td>~isU", $html, $others1);
+		preg_match_all("~IP_[A-Z]~isU", $html, $this->status);
+		$this->other=array(array());
+		for($i=0; $i<count($others1[0])/3; $i++){
+			$this->other[$i]=array($others1[0][3*$i], $others1[0][3*$i+1], $others1[0][3*$i+2]);
+		}
+		$db=new Database();
+		$this->address=array();
+		for($i=0; $i<count($this->name[0]); $i++){
+			$this->address[$i]=($db->getAddressByName($this->name[0][$i]))[0]["address"];
+		}
+	}
+
+	function getName(){
+		return $this->name;
+	}
+	function getAddress(){
+		return $this->address;
+	}
+	function getAdmission(){
+		return $this->admission;
+	}
+	function getOther(){
+		return $this->other;
+	}
+	function getFull(){
+		return $this->full;
+	}
+	function getStatus(){
+		return $this->status;
+	}
 }
 ?>

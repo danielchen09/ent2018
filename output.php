@@ -10,7 +10,7 @@
 
 			$h=new HospitalData("https://www.nhi.gov.tw/SysService/SevereAcuteHospital.aspx");
 			$html=$h->getHtml();
-			preg_match_all("~<a[^>]*>(.*)</a>~U", $html, $names);
+			preg_match_all("~<a[^>]*>(.*)</a>~Us", $html, $names);
 			preg_match_all("~([0-9]+)</div>~isU", $html, $admission);
 			preg_match_all("~\s(是|否)~isU", $html, $full);
 			preg_match_all("~([0-9]+)</td>~isU", $html, $others);
@@ -19,8 +19,13 @@
 			for($i=0; $i<count($others[0])/3; $i++){
 				$newOther[$i]=array($others[0][3*$i], $others[0][3*$i+1], $others[0][3*$i+2]);
 			}
+			$db=new Database();
+			$address=array();
 			for($i=0; $i<count($names[0]); $i++){
-				echo $names[0][$i] . " | " . $admission[0][$i] . " | " . $newOther[$i][0] . " | " . $newOther[$i][1] . " | " . $newOther[$i][2] . " | " . $full[0][$i] . " | " . $status[0][$i][3] . "<br>";
+				$address[$i]=($db->getAddressByName($names[0][$i]))[0]["address"];
+			}
+			for($i=0; $i<count($names[0]); $i++){
+				echo $names[0][$i] . " | " . $address[$i] . " | " . $admission[0][$i] . " | " . $newOther[$i][0] . " | " . $newOther[$i][1] . " | " . $newOther[$i][2] . " | " . $full[0][$i] . " | " . $status[0][$i][3] . "<br>";
 			}
 			
 			/*
