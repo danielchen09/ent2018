@@ -28,15 +28,15 @@
         <title>Hospital Finder</title>
     </head>
     <body>
-        <div class = "jumbotron">
+        <header>
             <?php
             if(!isset($_SESSION["user"])){
                 echo "
                             <ul>
                                 <li><a class = \"icon-text\" data = \"LOGIN\" href = \"./login\"><i class = \"fa fa-sign-in\"></i> LOGIN</a></li>
-                                <li><a> | </a></li>
+                                <li><a class = \"divider\"> | </a></li>
                                 <li><a class = \"icon-text\" data = \"REGISTER\" href = \"./register\"><i class = \"fa fa-user-plus\"></i> REGISTER</a></li>
-                                <li><h1>HOSPITAL FINDER</h1></li>
+                                <li><a class = \"logo\" href = \"\"><img src = \"web_icon.png\" class = \"logo-icon\">hospital finder</a></li>
                             </ul>
                         ";
             }else{
@@ -56,7 +56,7 @@
                         ";
             }
             ?>
-        </div>
+        </header>
 
         <script>
             function openNav(){
@@ -88,7 +88,6 @@
 
                         for (var ri = styleSheet.rules.length - 1; ri >= 0; ri--) {
                             if (!styleSheet.rules[ri].selectorText) continue;
-
                             if (styleSheet.rules[ri].selectorText.match(':hover')) {
                                 styleSheet.deleteRule(ri);
                             }
@@ -114,4 +113,7 @@
             </div>
         </div>
     </body>
+    <footer>
+        <p>Hospital Finder &#169; </p>
+    </footer>
 </html>
