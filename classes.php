@@ -149,7 +149,7 @@ class Database{
         $address = ($this->conn->query("SELECT address FROM HOSPITALINFO WHERE ID='" . $id . "';")->fetch_assoc())["address"];
 
         $prepAddr = str_replace(' ','+',$address);
-        $geocode=file_get_contents('https://maps.google.com/maps/api/geocode/json?address='.$prepAddr.'&sensor=false');
+        $geocode=file_get_contents('https://maps.google.com/maps/api/geocode/json?key=AIzaSyAa6Ly7B_jOG4p6r9uK1Aw4je5BWnoqPtY&address='.$prepAddr.'&sensor=false');
         $output= json_decode($geocode);
         $latitude = $output->results[0]->geometry->location->lat;
         $longitude = $output->results[0]->geometry->location->lng;
@@ -232,7 +232,7 @@ class HospitalDataTW{
         for($i = 0; $i < count($this->name[0]); $i++){
             $index = strpos($this->name[0][$i], ">") + 1;
             $n = substr($this->name[0][$i],$index, -4);
-            $this->name[0][0][$i] = $n;
+            $this->name[0][$i] = $n;
         }
         for($i=0; $i<count($this->name[0]); $i++){
             $this->address[$i]=($db->getAddressByName($this->name[0][$i]))[0]["address"];
